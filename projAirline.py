@@ -71,25 +71,27 @@ def getData():
 #Time Conversion function. This function converts the time into a numerical
 #integer for most operations.
 
-def timeConvert(depTimes, arrTimes):
-    depInt = []
-    arrInt = []
+def timeConvert(time):
+    time = str(time)
+    hour = time[0:2]
+    minute = time[3:5]
+
+    hour = int(hour) * 60
+    minute = int(minute)
+
+    time = hour + minute
     
-    for t in depTimes:
-        depInt[t] = int(depTimes[t])
+    return time
 
-    for y in arrTimes:
-        arrInt[y] = int(arrTimes[t])
-        
-    return depInt, arrInt
-
-#Exception function to handle exceptions for all functions
+#Exception function to handle exceptions for all functions.
 
 def exception(choice):
     ex = False
     while ex == False:
-        if choice >= 0 or choice <= 8:
-            ex = True
+        try:
+            choice = int(input("Choice ==> "))
+            if choice >= 1 or choice < 8:
+                ex = True
         except ValueError:
             print("Entry must be a number")
         except choice <= 0 or choice >= 8:
@@ -109,7 +111,9 @@ def menu():
     print("6 -- Write a file with flights sorted by departure time")
     print("7 -- Quit")
     choice = int(input("Choice ==> "))
-    return choice
+    real = exception(choice)
+    if real == True:
+        return choice
         
 
 #Search function. This allows the user to input their desired airline
@@ -117,7 +121,8 @@ def menu():
 #types of data from the file). There should be exception handling.
 #It takes all data from getData.
 
-def search(airline, flightNum, depInt, arrInt, price):
+def search(airlines, flightNums, depInt, arrInt, prices):
+    airlineName = input("Enter airline name: ")
     return flightInfo
 
 #Shorter Flights function. This function asks the user to specify a
@@ -126,21 +131,31 @@ def search(airline, flightNum, depInt, arrInt, price):
 #Duration = arrival - departure. It will return a list of flights.
 #It will take all data.
 
-def shorterFlights(airline, flightNum, depInt, arrInt, price):
+def shorterFlights(airlines, flightNums, depInt, arrInt, prices):
+    maxDur = input("Enter maximum duration (in minutes)")
+    dur = arrInt - depInt
+    if maxDur >= dur:
+        print()
     return shorterList
 
 #Cheapest Flights function. This function asks the user for an airline
 #and returns the cheapest flight from that airline. Exception handling req.
 #It takes all data.
 
-def cheapestFlights(airline, flightNum, depInt, arrInt, price):
+def cheapestFlights(airlines, flightNums, depInt, arrInt, prices):
+    cheapest = 10000
+    cheapAir = input("Enter airline name")
+    if cheapAir in airlines:
+        for g in prices:
+            if cheapest[g] < prices[g]:
+                print()
     return cheapest
 
 #Timed Flight function. This function asks the user for a time in the
 #format HH:MM. The clock is 24 hours. Excemption handling req. It returns
 #all flights that depart after the time (presumably before 24:00).
 
-def timedFlight(airline, flightNum, depInt, arrInt, price):
+def timedFlight(airlines, flightNums, depInt, arrInt, prices):
     return timedList
 
 #Average Price function. This function adds all prices together and
@@ -148,13 +163,20 @@ def timedFlight(airline, flightNum, depInt, arrInt, price):
 #adding all prices together and dividing it by the total number of flights.
 #Only prices are needed. 
 
-def averagePrice(price):
+def averagePrice(prices):
+    totalPrice = 0
+    for p in range(len(prices)):
+        totalPrice = totalPrice + prices[p]
+    average = totalPrice / len(prices)
     return average
 
 #Sort Flights function. This function sorts out flights by their departure
 #time and returns the sorted list.
 
 def sortFlights(depInt):
+
+    for
+    
     for a in range(0, len(depInt)):            
         min = a
         for b in range(a + 1, len(depInt)):
@@ -165,13 +187,18 @@ def sortFlights(depInt):
         depInt[i], depInt[min] = depInt[min], depInt[i]
     return depInt
 
-#Write File function. This function gathers the lists
+#Write Flights function. This function gathers the lists returned by sort
+#flights and writes them to a csv file.
+
+def writeFlights():
+    return outFile
+
 #Print function. This function prints results and such from other
 #functions based on their returned value. It returns nothing.
 
-def printResults(flightInfo, shorterList, cheapest, timedList, average, outFile):
-    print(airlines[i].ljust(8), flnums[i].ljust(6), departures[i].rjust(7),arrivals[i].rjust(7),"$",str(prices[i]).rjust(3))
-
+def printResults():
+    print(airlines[i].ljust(8), flightNums[i].ljust(6), depInt[i].rjust(7),arrInt[i].rjust(7),"$",str(prices[i]).rjust(3))
+    
     return
 
 #Main function. This function calls all other functions by setting
@@ -181,15 +208,22 @@ def printResults(flightInfo, shorterList, cheapest, timedList, average, outFile)
 
 def main():
     airlines, flightNums, depTimes, arrTimes, prices = getData()
-    depInt, arrInt = timeConvert(depTimes, arrTimes)
+    depInt = timeConvert(depTimes)
+    arrInt = timeConvert(arrTimes)
     choice = menu()
     ex = exception(choice)
-    flightInfo = search(airline, flightNum, depInt, arrInt, price)
-    shorterList = shorterFlights(airline, flightNum, depInt, arrInt, price)
-    cheapest = cheapestFlights(airline, flightNum, depInt, arrInt, price)
-    timedList = timedFlight(airline, flightNum, depInt, arrInt, price)
-    average = averagePrice(price)
-    outFile = sortFlights(airline, flightNum, depInt, arrInt, price)
+    if choice == 1:
+        flightInfo = search(airlines, flightNums, depInt, arrInt, prices)
+    if choice == 2:
+        shorterList = shorterFlights(airlines, flightNums, depInt, arrInt, prices)
+    if choice == 3:
+        cheapest = cheapestFlights(airlines, flightNums, depInt, arrInt, prices)
+    if choice == 4:
+        timedList = timedFlight(airlines, flightNums, depInt, arrInt, prices)
+    if choice == 5:
+        average = averagePrice(prices)
+    if choice == 6:
+        airlines, flightNums, depTimes, arrTimes, prices = sortFlights(depInt)
+    if choice == 7:
+        print("Thank you for flying with us")
     printResults(flightInfo, shorterList, cheapest, timedList, average, outFile)
-    
-
